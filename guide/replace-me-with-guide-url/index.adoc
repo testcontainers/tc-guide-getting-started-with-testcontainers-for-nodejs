@@ -1,0 +1,76 @@
+---
+title: "GUIDE_TITLE"
+date: 2023-03-07T09:39:58+05:30
+draft: false
+description: GUIDE_SHORT_DESCRIPTION
+repo: https://github.com/testcontainers/TC_GUIDE_REPO_NAME
+languages:
+  - Java
+tags:
+  - spring-boot
+  - postgresql
+---
+:toc:
+:toclevels: 2
+:codebase: https://raw.githubusercontent.com/testcontainers/TC_GUIDE_REPO_NAME/main
+
+In this guide you will learn how to
+
+* Perform task 1
+* Perform task 2
+
+== Prerequisites
+* Java 17+ / Go 1.20+ / Node 16.x etc
+* Your favorite IDE (Intellij IDEA, Eclipse, NetBeans, VS Code)
+* A Docker environment supported by Testcontainers https://www.testcontainers.org/supported_docker_environment/
+
+== What we are going to achieve in this guide
+
+Summary of what we are going to implement and learn in one or two paragraphs.
+
+== Getting Started
+Explain how to create a new project with your favourite build tool support.
+
+Here is how you can include an inline code block:
+
+[source,java]
+----
+class Hello {
+    void method1() {
+        System.out.println("Hello");
+    }
+}
+----
+
+== Step 1
+
+Here is how you can include entire file from sample code:
+
+[source,sql]
+----
+include::{codebase}/src/test/resources/init-db.sql[]
+----
+
+[WARNING]
+A warning message here.
+
+== Step 2
+
+Here is how you can include specific lines of code segments from sample code:
+
+[source,java]
+----
+include::{codebase}/src/test/java/com/testcontainers/demo/LocalStackTest.java[lines="23..48,55..76"]
+----
+
+[NOTE]
+An important note here.
+
+== Summary
+Summary of what we have learned and add call-to-action.
+
+To learn more about Testcontainers visit http://testcontainers.com
+
+== Further Reading
+* https://testcontainers.com/guides/introducing-testcontainers/
+* https://www.testcontainers.org/quickstart/junit_5_quickstart/
