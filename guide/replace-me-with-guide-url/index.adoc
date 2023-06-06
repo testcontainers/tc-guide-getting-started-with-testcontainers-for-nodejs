@@ -1,18 +1,21 @@
 ---
-title: "GUIDE_TITLE"
-date: 2023-03-07T09:39:58+05:30
+title: "Getting started with Testcontainers for NodeJS"
+date: 2023-06-06T14:30:00+01:00
 draft: false
-description: GUIDE_SHORT_DESCRIPTION
-repo: https://github.com/testcontainers/TC_GUIDE_REPO_NAME
+description: This guide will help you to get started with Testcontainers for NodeJS by demonstrating how you can use PostgreSQL for testing.
+repo: https://github.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-nodejs
 languages:
-  - Java
+  - Javascript
 tags:
-  - spring-boot
+  - node
+  - nodejs
+  - javascript
+  - typescript
   - postgresql
 ---
 :toc:
 :toclevels: 2
-:codebase: https://raw.githubusercontent.com/testcontainers/TC_GUIDE_REPO_NAME/main
+:codebase: https://raw.githubusercontent.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-nodejs/main
 
 In this guide you will learn how to
 
