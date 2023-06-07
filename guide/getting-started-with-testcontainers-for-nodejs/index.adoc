@@ -47,7 +47,7 @@ npm install pg --save
 npm install jest testcontainers --save-dev
 ----
 
-== Implement business logic
+== Write the tests and solution
 
 Let us create a simple application that stores and retrieves customers from a Postgres database.
 
@@ -58,16 +58,16 @@ TDD is a great way to develop software, and coupled with Testcontainers we can q
 include::{codebase}/src/src/customer-repository.test.js[]
 ----
 
-The `beforeAll` block sets up a real Postgres container. We then initialize a Postgres client from the `pg` library, and connect it to the Postgres instance running in the container. As part of the test setup, we create the Customer table.
+The `beforeAll` block sets up a _real_ Postgres container. We then initialize a client from the `pg` library, and connect it to the Postgres instance running in the container. As part of the test setup, we create the `customer` table.
 
-Now let's implement the solution:
+Now, let's implement a solution:
 
 [source%nowrap,javascript]
 ----
 include::{codebase}/src/src/customer-repository.js[]
 ----
 
-Let's run the test:
+Looks good, but does it work?
 
 [source%nowrap,bash]
 ----
@@ -88,7 +88,9 @@ Ran all test suites.
 
 Voila! You have your first Testcontainers based test running.
 
-Perhaps that was a bit too transparent, did we really spin up a container? You can see exactly what Testcontainers is doing by setting the `DEBUG` environment variable. Let's re-run the test with `DEBUG=testcontainers*`:
+Are you seeing the benefit of testing with a real Postgres instance yet? If not, try changing the `id` type of the `customer` table from `INT` to `BIGINT` and re-run the test, what would you expect to happen? If you had a unit test, or used a mock instead of using Testcontainers, you would _not_ have caught this bug.
+
+Sometimes it's useful to see what Testcontainers is doing in the background. Did we really spin up a container? What version did we use? What's Postgres logging? You can see all this and more by setting the `DEBUG` environment variable. Let's re-run the test with `DEBUG=testcontainers*` and find out:
 
 [source%nowrap,bash]
 ----
@@ -202,8 +204,6 @@ Snapshots:   0 total
 Time:        2.138 s, estimated 3 s
 Ran all test suites
 ----
-
-That's a lot of information, you can also see the logs emitted by Postgres. This is very useful when working with more complex, custom setups.
 
 == Conclusion
 
