@@ -88,9 +88,9 @@ Ran all test suites.
 
 Voila! You have your first Testcontainers based test running.
 
-Are you seeing the benefit of testing with a real Postgres instance yet? If not, try changing the `id` type of the `customer` table from `INT` to `BIGINT` and re-run the test, what would you expect to happen? If you had a unit test, or used a mock instead of using Testcontainers, you would _not_ have caught this bug.
+Are you seeing the benefit of testing with a real Postgres instance? If not, try changing the `id` type of the `customer` table from `INT` to `BIGINT` and re-run the test, what would you expect to happen? If you had a unit test, or used a mock instead of using Testcontainers, you would _not_ have caught this bug.
 
-Sometimes it's useful to see what Testcontainers is doing in the background. Did we really spin up a container? What version did we use? What's Postgres logging? You can see all this and more by setting the `DEBUG` environment variable. Let's re-run the test with `DEBUG=testcontainers*` and find out:
+Sometimes it's useful to see what Testcontainers is doing under the hood. Did we really spin up a container? What version did we use? What's Postgres doing? You can see all this and more by setting the `DEBUG` environment variable. Let's re-run the test with `DEBUG=testcontainers*` and find out:
 
 [source%nowrap,bash]
 ----
@@ -207,8 +207,7 @@ Ran all test suites
 
 == Conclusion
 
-We have explored how to use Testcontainers for NodeJS to test a NodeJS
-application using a Postgres database.
+We have explored how to use Testcontainers for NodeJS to test an application using a Postgres database.
 
 We have seen how writing an integration test using Testcontainers is very
 similar to writing a unit test that you can run from your IDE. Also, any of

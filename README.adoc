@@ -49,7 +49,8 @@ Server: Docker Engine - Community
 [source,shell]
 ----
 git clone https://github.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-nodejs.git
-cd tc-guide-getting-started-with-testcontainers-for-nodejs
+cd tc-guide-getting-started-with-testcontainers-for-nodejs/src
+npm install
 ----
 * Open the **tc-guide-getting-started-with-testcontainers-for-nodejs** project in your favorite IDE.
 
