@@ -1,0 +1,227 @@
+---
+title: "Getting started with Testcontainers for NodeJS"
+date: 2023-06-06T14:30:00+01:00
+draft: false
+description: This guide will help you to get started with Testcontainers for NodeJS by demonstrating how you can use PostgreSQL for testing.
+repo: https://github.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-nodejs
+languages:
+  - Javascript
+tags:
+  - node
+  - nodejs
+  - javascript
+  - typescript
+  - postgresql
+---
+:toc:
+:toclevels: 2
+:codebase: https://raw.githubusercontent.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-nodejs/main
+
+Testcontainers is a testing library that provides easy and lightweight APIs for
+bootstrapping integration tests with real services wrapped in Docker
+containers. Using Testcontainers, you can write tests that talk to the same
+type of services you use in production, without mocks or in-memory services.
+
+[NOTE]
+If you are new to Testcontainers, please read
+https://testcontainers.com/guides/introducing-testcontainers[What is
+Testcontainers, and why should you use it?] to learn more about it.
+
+Let us look at how we can use Testcontainers to test a NodeJS application using a
+Postgres database.
+
+== Create a new project
+
+Initialize a new NodeJS project using the `npm init` command:
+
+[source,bash]
+----
+npm init -y
+----
+
+Add `pg`, `jest` and `testcontainers` as dependencies:
+
+[source,bash]
+----
+npm install pg --save
+npm install jest testcontainers --save-dev
+----
+
+== Implement business logic
+
+Let us create a simple application that stores and retrieves customers from a Postgres database.
+
+TDD is a great way to develop software, and coupled with Testcontainers we can quickly iterate to get working solutions with confidence. Let's write our first test which saves and returns customers from Postgres:
+
+[source%nowrap,javascript]
+----
+include::{codebase}/src/src/customer-repository.test.js[]
+----
+
+The `beforeAll` block sets up a real Postgres container. We then initialize a Postgres client from the `pg` library, and connect it to the Postgres instance running in the container. As part of the test setup, we create the Customer table.
+
+Now let's implement the solution:
+
+[source%nowrap,javascript]
+----
+include::{codebase}/src/src/customer-repository.js[]
+----
+
+Let's run the test:
+
+[source%nowrap,bash]
+----
+$ npm test
+
+> tc-guide-getting-started-with-testcontainers-for-nodejs@1.0.0 test
+
+ PASS  src/customer-repository.test.js
+  Customer Repository
+    ✓ should create and return multiple customers (5 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        2.11 s, estimated 3 s
+Ran all test suites.
+----
+
+Voila! You have your first Testcontainers based test running.
+
+Perhaps that was a bit too transparent, did we really spin up a container? You can see exactly what Testcontainers is doing by setting the `DEBUG` environment variable. Let's re-run the test with `DEBUG=testcontainers*`:
+
+[source%nowrap,bash]
+----
+$ DEBUG=testcontainers* npm test
+
+> tc-guide-getting-started-with-testcontainers-for-nodejs@1.0.0 test
+
+  testcontainers [DEBUG] Loading ".testcontainers.properties" file... +0ms
+  testcontainers [DEBUG] Loaded Docker client configuration, tcHost: "tcp://127.0.0.1:42317", dockerHost: "tcp://127.0.0.1:42317" +3ms
+  testcontainers [DEBUG] Found Docker client strategy "UnixSocketStrategy" +0ms
+  testcontainers [DEBUG] Testing Docker client strategy "unix:///var/run/docker.sock"... +0ms
+  testcontainers [DEBUG] Fetching system info... +3ms
+  testcontainers [DEBUG] Node version: v18.15.0, Platform: linux, Arch: x64, OS: Ubuntu 23.04, Version: 24.0.1, Arch: x86_64, CPUs: 32, Memory: 16746291200, Compose installed: true, Compose version: 1.29.2 +216ms
+  testcontainers [INFO] Using Docker client strategy "UnixSocketStrategy", Docker host "localhost" (127.0.0.1) +1ms
+  testcontainers [DEBUG] Not pulling image "postgres:13.3-alpine" as it already exists +2ms
+  testcontainers [DEBUG] Creating new Reaper for session "2d8457b13f3d" with socket path "/var/run/docker.sock"... +0ms
+  testcontainers [DEBUG] Not pulling image "testcontainers/ryuk:0.4.0" as it already exists +1ms
+  testcontainers [INFO] Creating container for image "testcontainers/ryuk:0.4.0"... +0ms
+  testcontainers [INFO] [a72827588430] Created container for image "testcontainers/ryuk:0.4.0" +52ms
+  testcontainers [INFO] [a72827588430] Starting container for image "testcontainers/ryuk:0.4.0"... +0ms
+  testcontainers [INFO] [a72827588430] Started container for image "testcontainers/ryuk:0.4.0" +249ms
+  testcontainers [DEBUG] [a72827588430] Waiting for container to be ready... +2ms
+  testcontainers [DEBUG] [a72827588430] Waiting for log message "/.+ Started!/"... +1ms
+  testcontainers:containers [a72827588430] 2023/06/07 09:06:32 Pinging Docker... +0ms
+  testcontainers:containers [a72827588430] 2023/06/07 09:06:32 Docker daemon is available! +0ms
+  testcontainers:containers [a72827588430] 2023/06/07 09:06:32 Starting on port 8080... +0ms
+  testcontainers:containers [a72827588430] 2023/06/07 09:06:32 Started! +0ms
+  testcontainers [INFO] [a72827588430] Container is ready +2ms
+  testcontainers [DEBUG] [a72827588430] Connecting to Reaper (attempt 1) on "localhost:32783"... +0ms
+  testcontainers [DEBUG] [a72827588430] Connected to Reaper +1ms
+  testcontainers [INFO] Creating container for image "postgres:13.3-alpine"... +0ms
+  testcontainers:containers [a72827588430] 2023/06/07 09:06:32 New client connected: 172.17.0.1:46694 +3ms
+  testcontainers:containers [a72827588430] 2023/06/07 09:06:32 Adding {"label":{"org.testcontainers.session-id=2d8457b13f3d":true}} +0ms
+  testcontainers [INFO] [9d3296dd6c2a] Created container for image "postgres:13.3-alpine" +36ms
+  testcontainers [INFO] [9d3296dd6c2a] Starting container for image "postgres:13.3-alpine"... +0ms
+  testcontainers [INFO] [9d3296dd6c2a] Started container for image "postgres:13.3-alpine" +248ms
+  testcontainers [DEBUG] [9d3296dd6c2a] Waiting for container to be ready... +1ms
+  testcontainers [DEBUG] [9d3296dd6c2a] Waiting for log message "/.*database system is ready to accept connections.*/"... +0ms
+  testcontainers:containers [9d3296dd6c2a] The files belonging to this database system will be owned by user "postgres". +285ms
+  testcontainers:containers [9d3296dd6c2a] This user must also own the server process. +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] The database cluster will be initialized with locale "en_US.utf8". +0ms
+  testcontainers:containers [9d3296dd6c2a] The default database encoding has accordingly been set to "UTF8". +0ms
+  testcontainers:containers [9d3296dd6c2a] The default text search configuration will be set to "english". +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] Data page checksums are disabled. +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] fixing permissions on existing directory /var/lib/postgresql/data ... ok +0ms
+  testcontainers:containers [9d3296dd6c2a] creating subdirectories ... ok +0ms
+  testcontainers:containers [9d3296dd6c2a] selecting dynamic shared memory implementation ... posix +0ms
+  testcontainers:containers [9d3296dd6c2a] selecting default max_connections ... 100 +0ms
+  testcontainers:containers [9d3296dd6c2a] selecting default shared_buffers ... 128MB +2ms
+  testcontainers:containers [9d3296dd6c2a] selecting default time zone ... UTC +27ms
+  testcontainers:containers [9d3296dd6c2a] creating configuration files ... ok +1ms
+  testcontainers:containers [9d3296dd6c2a] running bootstrap script ... ok +47ms
+  testcontainers:containers [9d3296dd6c2a] sh: locale: not found +92ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:32.636 UTC [30] WARNING:  no usable system locales were found +0ms
+  testcontainers:containers [9d3296dd6c2a] performing post-bootstrap initialization ... ok +202ms
+  testcontainers:containers [9d3296dd6c2a] syncing data to disk ... ok +46ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] Success. You can now start the database server using: +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] initdb: warning: enabling "trust" authentication for local connections +0ms
+  testcontainers:containers [9d3296dd6c2a] You can change this by editing pg_hba.conf or using the option -A, or +0ms
+  testcontainers:containers [9d3296dd6c2a] --auth-local and --auth-host, the next time you run initdb. +0ms
+  testcontainers:containers [9d3296dd6c2a] pg_ctl -D /var/lib/postgresql/data -l logfile start +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] waiting for server to start....2023-06-07 09:06:32.903 UTC [35] LOG:  starting PostgreSQL 13.3 on x86_64-pc-linux-musl, compiled by gcc (Alpine 10.3.1_git20210424) 10.3.1 20210424, 64-bit +20ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:32.910 UTC [35] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432" +7ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:32.919 UTC [36] LOG:  database system was shut down at 2023-06-07 09:06:32 UTC +9ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:32.922 UTC [35] LOG:  database system is ready to accept connections +2ms
+  testcontainers:containers [9d3296dd6c2a] done +65ms
+  testcontainers:containers [9d3296dd6c2a] server started +0ms
+  testcontainers:containers [9d3296dd6c2a] CREATE DATABASE +81ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/* +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] waiting for server to shut down....2023-06-07 09:06:33.068 UTC [35] LOG:  received fast shutdown request +1ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.071 UTC [35] LOG:  aborting any active transactions +2ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.071 UTC [35] LOG:  background worker "logical replication launcher" (PID 42) exited with exit code 1 +0ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.071 UTC [37] LOG:  shutting down +0ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.092 UTC [35] LOG:  database system is shut down +22ms
+  testcontainers:containers [9d3296dd6c2a] done +76ms
+  testcontainers:containers [9d3296dd6c2a] server stopped +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] PostgreSQL init process complete; ready for start up. +0ms
+  testcontainers:containers [9d3296dd6c2a]  +0ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.180 UTC [1] LOG:  starting PostgreSQL 13.3 on x86_64-pc-linux-musl, compiled by gcc (Alpine 10.3.1_git20210424) 10.3.1 20210424, 64-bit +12ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.180 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432 +0ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.180 UTC [1] LOG:  listening on IPv6 address "::", port 5432 +0ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.186 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432" +5ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.193 UTC [49] LOG:  database system was shut down at 2023-06-07 09:06:33 UTC +7ms
+  testcontainers [INFO] [9d3296dd6c2a] Container is ready +731ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.197 UTC [1] LOG:  database system is ready to accept connections +7ms
+  testcontainers [INFO] [9d3296dd6c2a] Stopping container... +27ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.243 UTC [1] LOG:  received fast shutdown request +43ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.249 UTC [1] LOG:  aborting any active transactions +6ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.249 UTC [1] LOG:  background worker "logical replication launcher" (PID 55) exited with exit code 1 +1ms
+  testcontainers:containers [9d3296dd6c2a] 2023-06-07 09:06:33.249 UTC [50] LOG:  shutting down +0ms
+  testcontainers [INFO] [9d3296dd6c2a] Stopped container +351ms
+
+ PASS  src/customer-repository.test.js
+  Customer Repository
+    ✓ should create and return multiple customers (4 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        2.138 s, estimated 3 s
+Ran all test suites
+----
+
+That's a lot of information, you can also see the logs emitted by Postgres. This is very useful when working with more complex, custom setups.
+
+== Conclusion
+
+We have explored how to use Testcontainers for NodeJS to test a NodeJS
+application using a Postgres database.
+
+We have seen how writing an integration test using Testcontainers is very
+similar to writing a unit test that you can run from your IDE. Also, any of
+your teammates can clone the project and run tests without installing Postgres
+on their computers.
+
+In addition to Postgres, Testcontainers provides dedicated
+https://github.com/testcontainers/testcontainers-node/tree/main/src/modules[modules] for many commonly used
+SQL databases, NoSQL databases, messaging queues, etc. You can use
+Testcontainers to run any containerized dependency for your tests!
+
+You can explore more about Testcontainers at https://testcontainers.com/.
+
+== Further Reading
+
+* https://node.testcontainers.org
