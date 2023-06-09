@@ -3,6 +3,8 @@ const { PostgreSqlContainer } = require("testcontainers");
 const { createCustomerTable, createCustomer, getCustomers } = require("./customer-repository");
 
 describe("Customer Repository", () => {
+    jest.setTimeout(60000);
+
     let postgresContainer;
     let postgresClient;
 
@@ -27,5 +29,5 @@ describe("Customer Repository", () => {
 
         const customers = await getCustomers(postgresClient);
         expect(customers).toEqual([customer1, customer2]);
-    }, 60000);
+    });
 });
