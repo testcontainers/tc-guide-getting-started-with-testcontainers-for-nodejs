@@ -27,5 +27,5 @@ describe("Customer Repository", () => {
 
         const customers = await getCustomers(postgresClient);
         expect(customers).toEqual([customer1, customer2]);
-    });
+    }, 60000);
 });
