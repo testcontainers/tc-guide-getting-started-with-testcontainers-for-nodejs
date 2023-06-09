@@ -1,8 +1,8 @@
 ---
-title: "Getting started with Testcontainers for NodeJS"
+title: "Getting started with Testcontainers for Node.js"
 date: 2023-06-06T14:30:00+01:00
 draft: false
-description: This guide will help you to get started with Testcontainers for NodeJS by demonstrating how you can use PostgreSQL for testing.
+description: This guide will help you to get started with Testcontainers for Node.js by demonstrating how you can use PostgreSQL for testing.
 repo: https://github.com/testcontainers/tc-guide-getting-started-with-testcontainers-for-nodejs
 languages:
   - Javascript
@@ -24,12 +24,12 @@ If you are new to Testcontainers, please read
 https://testcontainers.com/guides/introducing-testcontainers[What is
 Testcontainers, and why should you use it?] to learn more about it.
 
-Let us look at how we can use Testcontainers to test a NodeJS application using a
-Postgres database.
+Let us look at how we can use Testcontainers to test a Node.js application using a
+PostgreSQL database.
 
 == Create a new project
 
-Initialize a new NodeJS project using the `npm init` command:
+Initialize a new Node.js project using the `npm init` command:
 
 [source,bash]
 ----
@@ -46,16 +46,16 @@ npm install jest testcontainers --save-dev
 
 == Write the tests and solution
 
-Let us create a simple application that stores and retrieves customers from a Postgres database.
+Let us create a simple application that stores and retrieves customers from a PostgreSQL database.
 
-TDD is a great way to develop software, and coupled with Testcontainers we can quickly iterate to get working solutions with confidence. Let's write our first test which saves and returns customers from Postgres:
+Test driven development (TDD) is a great way to develop software, and coupled with Testcontainers we can quickly iterate to get working solutions with confidence. Let's write our first test which saves and returns customers from PostgreSQL:
 
 [source%nowrap,javascript]
 ----
 include::{codebase}/src/src/customer-repository.test.js[]
 ----
 
-The `beforeAll` block sets up a _real_ Postgres container. We then initialize a client from the `pg` library, and connect it to the Postgres instance running in the container. As part of the test setup, we create the `customer` table.
+The `beforeAll` block sets up a _actual_ PostgreSQL container. We then initialize a client from the `pg` library, and connect it to the PostgreSQL instance running in the container. As part of the test setup, we create the `customer` table.
 
 Now, let's implement a solution:
 
@@ -85,9 +85,9 @@ Ran all test suites.
 
 Voila! You have your first Testcontainers based test running.
 
-Are you seeing the benefit of testing with a real Postgres instance? If not, try changing the `id` type of the `customer` table from `INT` to `BIGINT` and re-run the test, what would you expect to happen? If you had a unit test, or used a mock instead of using Testcontainers, you would _not_ have caught this bug.
+Are you seeing the benefit of testing with a real PostgreSQL instance? If not, try changing the `id` type of the `customer` table from `INT` to `BIGINT` and re-run the test, what would you expect to happen? If you had a unit test, or used a mock instead of using Testcontainers, you would _not_ have caught this bug.
 
-Sometimes it's useful to see what Testcontainers is doing under the hood. Did we really spin up a container? What version did we use? What's Postgres doing? You can see all this and more by setting the `DEBUG` environment variable. Let's re-run the test with `DEBUG=testcontainers*` and find out:
+Sometimes it's useful to see what Testcontainers is doing under the hood. Did we really spin up a container? What version did we use? What's PostgreSQL doing? You can see all this and more by setting the `DEBUG` environment variable. Let's re-run the test with `DEBUG=testcontainers*` and find out:
 
 [source%nowrap,bash]
 ----
@@ -204,17 +204,16 @@ Ran all test suites
 
 == Conclusion
 
-We have explored how to use Testcontainers for NodeJS to test an application using a Postgres database.
+We have explored how to use Testcontainers for Node.js to test an application using a PostgreSQL database.
 
 We have seen how writing an integration test using Testcontainers is very
 similar to writing a unit test that you can run from your IDE. Also, any of
 your teammates can clone the project and run tests without installing Postgres
 on their computers.
 
-In addition to Postgres, Testcontainers provides dedicated
+In addition to PostgreSQL, Testcontainers provides dedicated
 https://github.com/testcontainers/testcontainers-node/tree/main/src/modules[modules] for many commonly used
-SQL databases, NoSQL databases, messaging queues, etc. You can use
-Testcontainers to run any containerized dependency for your tests!
+SQL databases, NoSQL databases, messaging queues, etc. Besides the modules you can use Testcontainers to run any containerized dependency for your tests!
 
 You can explore more about Testcontainers at https://testcontainers.com/.
 
