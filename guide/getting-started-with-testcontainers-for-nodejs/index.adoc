@@ -7,10 +7,7 @@ repo: https://github.com/testcontainers/tc-guide-getting-started-with-testcontai
 languages:
   - Javascript
 tags:
-  - node
   - nodejs
-  - javascript
-  - typescript
   - postgresql
 ---
 :toc:
