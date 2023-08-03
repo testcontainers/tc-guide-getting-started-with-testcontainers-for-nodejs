@@ -1,5 +1,5 @@
 const { Client } = require("pg");
-const { PostgreSqlContainer } = require("testcontainers");
+const { PostgreSqlContainer } = require("@testcontainers/postgresql");
 const { createCustomerTable, createCustomer, getCustomers } = require("./customer-repository");
 
 describe("Customer Repository", () => {
