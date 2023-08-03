@@ -36,12 +36,12 @@ Initialize a new Node.js project using the `npm init` command:
 npm init -y
 ----
 
-Add `pg`, `jest` and `testcontainers` as dependencies:
+Add `pg`, `jest` and `@testcontainers/postgresql` as dependencies:
 
 [source,bash]
 ----
 npm install pg --save
-npm install jest testcontainers --save-dev
+npm install jest @testcontainers/postgresql --save-dev
 ----
 
 == Write the tests and solution
