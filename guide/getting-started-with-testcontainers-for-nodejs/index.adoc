@@ -212,7 +212,7 @@ your teammates can clone the project and run tests without installing Postgres
 on their computers.
 
 In addition to PostgreSQL, Testcontainers provides dedicated
-https://github.com/testcontainers/testcontainers-node/tree/main/src/modules[modules] for many commonly used
+https://github.com/testcontainers/testcontainers-node/tree/main/packages/modules[modules] for many commonly used
 SQL databases, NoSQL databases, messaging queues, etc. Besides the modules you can use Testcontainers to run any containerized dependency for your tests!
 
 You can explore more about Testcontainers at https://testcontainers.com/.
